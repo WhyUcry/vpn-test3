@@ -1,0 +1,229 @@
+{
+    "dns": {
+        "queryStrategy": "UseIPv4",
+        "servers": [
+            "1.1.1.1",
+            "8.8.8.8",
+            "8.8.4.4"
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10808,
+            "protocol": "socks",
+            "settings": {
+                "auth": "noauth",
+                "udp": true
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": true
+            },
+            "tag": "socks"
+        }
+    ],
+    "log": {
+        "loglevel": "warning"
+    },
+    "meta": null,
+    "observatory": {
+        "enableConcurrency": true,
+        "probeInterval": "10s",
+        "probeUrl": "http://health.mantaray-core/",
+        "subjectSelector": [
+            "us-reality-",
+            "us-salamander-"
+        ]
+    },
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "152.232.57.101",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "SqArIWpSt5VG9HVrtcZQn1r0Tc_eRvYzca2OFDBkF24",
+                    "serverName": "salam.ru",
+                    "shortId": "bd",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "us-reality-us-c7PE19P4Jj"
+        }
+    ],
+    "remarks": "🇺🇸 США",
+    "routing": {
+        "balancers": [
+            {
+                "selector": [
+                    "us-reality-"
+                ],
+                "strategy": {
+                    "type": "leastPing"
+                },
+                "tag": "lb_reality"
+            }
+        ],
+        "domainMatcher": "hybrid",
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "balancerTag": "lb_reality",
+                "domain": [
+                    "domain:vpn.ecobuy.ltd",
+                    "domain:res.mycdn-me.ru",
+                    "domain:app.shukafish.site",
+                    "domain:api.shukafish.site",
+                    "domain:cdn.shukafish.site",
+                    "domain:media.shukafish.site",
+                    "domain:web.shukafish.site",
+                    "domain:portal.shukaclub.site",
+                    "domain:admin.shukaclub.site",
+                    "domain:static.shukaclub.site",
+                    "domain:assets.shukaclub.site",
+                    "domain:files.shukaclub.site",
+                    "domain:blog.shukalake.site",
+                    "domain:news.shukalake.site",
+                    "domain:docs.shukalake.site",
+                    "domain:help.shukalake.site",
+                    "domain:support.shukalake.site",
+                    "domain:status.shukariver.site",
+                    "domain:monitor.shukariver.site",
+                    "domain:metrics.shukariver.site",
+                    "domain:logs.shukariver.site",
+                    "domain:health.shukariver.site",
+                    "domain:auth.shukalove.site",
+                    "domain:login.shukalove.site",
+                    "domain:account.shukalove.site",
+                    "domain:profile.shukalove.site",
+                    "domain:members.shukalove.site",
+                    "domain:dashboard.shukalife.site",
+                    "domain:panel.shukalife.site",
+                    "domain:console.shukalife.site",
+                    "domain:manage.shukalife.site",
+                    "domain:control.shukalife.site",
+                    "domain:search.shukahunt.site",
+                    "domain:catalog.shukahunt.site",
+                    "domain:store.shukahunt.site",
+                    "domain:shop.shukahunt.site",
+                    "domain:market.shukahunt.site",
+                    "domain:mail.shukacatch.site",
+                    "domain:smtp.shukacatch.site",
+                    "domain:imap.shukacatch.site",
+                    "domain:pop.shukacatch.site",
+                    "domain:webmail.shukacatch.site",
+                    "domain:dev.shukabait.site",
+                    "domain:test.shukabait.site",
+                    "domain:stage.shukabait.site",
+                    "domain:preview.shukabait.site",
+                    "domain:sandbox.shukabait.site",
+                    "domain:mobile.shukaspin.site",
+                    "domain:music.shukaspin.site",
+                    "domain:video.shukaspin.site",
+                    "domain:images.shukaspin.site",
+                    "domain:download.shukaspin.site"
+                ],
+                "ruleTag": "shuka-subscription-hosts",
+                "type": "field"
+            },
+            {
+                "domain": [
+                    "domain:ru",
+                    "domain:su",
+                    "domain:xn--p1ai",
+                    "domain:moscow",
+                    "domain:ya.cc",
+                    "domain:yandex.com",
+                    "domain:yandex.net",
+                    "domain:yango.com",
+                    "domain:vk.com",
+                    "domain:vk.cc",
+                    "domain:mvk.com",
+                    "domain:mycdn.me",
+                    "domain:my.com",
+                    "domain:my.games",
+                    "domain:ok.me",
+                    "domain:kaspersky.com",
+                    "domain:ozon.com",
+                    "domain:ozon.by",
+                    "domain:ozon.kz",
+                    "domain:wildberries.by",
+                    "domain:wildberries.kz",
+                    "domain:2gis.com",
+                    "domain:magnit.com",
+                    "domain:fix-price.com",
+                    "domain:x5.tech",
+                    "domain:megafon.com",
+                    "domain:moex.com",
+                    "domain:okko.tv",
+                    "domain:okko.sport",
+                    "domain:boosty.to",
+                    "domain:lenta.com",
+                    "domain:meduza.io",
+                    "domain:premier.one",
+                    "domain:hh.by",
+                    "domain:hh.kz",
+                    "domain:mosmetro.tech",
+                    "domain:avs.io",
+                    "domain:rbsgate.com"
+                ],
+                "outboundTag": "direct",
+                "type": "field"
+            },
+            {
+                "outboundTag": "direct",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "type": "field"
+            },
+            {
+                "balancerTag": "lb_reality",
+                "inboundTag": [
+                    "socks-in",
+                    "http-in",
+                    "socks",
+                    "http",
+                    "tun-in"
+                ],
+                "network": "tcp,udp",
+                "type": "field"
+            }
+        ]
+    }
+}

@@ -1,0 +1,37 @@
+# Replace vpn.example.com with your actual domain
+{
+    email admin@example.com
+}
+
+vpn.example.com {
+    # Reverse proxy to backend
+    reverse_proxy backend:8000
+
+    # Security headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer-when-downgrade"
+        -Server
+    }
+
+    # Rate limiting
+    rate_limit {
+        zone subscription {
+            key {remote_host}
+            events 100
+            window 1m
+        }
+    }
+
+    # Logs
+    log {
+        output file /data/access.log
+        format json
+    }
+
+    # TLS (automatic Let's Encrypt)
+    tls {
+        protocols tls1.2 tls1.3
+    }
+}

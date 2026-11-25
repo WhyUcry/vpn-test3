@@ -1,0 +1,24 @@
+# Bot Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy bot requirements
+COPY bot/requirements.txt /app/bot/requirements.txt
+RUN pip install --no-cache-dir -r /app/bot/requirements.txt
+
+# Copy backend dependencies (bot uses backend models)
+COPY backend/requirements.txt /app/backend/requirements.txt
+RUN pip install --no-cache-dir -r /app/backend/requirements.txt
+
+# Copy bot code
+COPY bot/ /app/bot/
+
+# Copy backend code (for models)
+COPY backend/ /app/backend/
+
+# Create directories
+RUN mkdir -p /app/data /app/logs
+
+# Run bot
+CMD ["python", "bot/main.py"]

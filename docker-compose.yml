@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: dudonya-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - CONFIGS_DIR=/app/configs
+      - BASE_DEVICES=${BASE_DEVICES}
+      - MAX_DEVICES=${MAX_DEVICES}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - dudonya-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: dudonya-bot
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - ADMIN_ID=${ADMIN_ID}
+      - DOMAIN=${DOMAIN}
+      - DATABASE_URL=${DATABASE_URL}
+      - BASE_DEVICES=${BASE_DEVICES}
+      - MAX_DEVICES=${MAX_DEVICES}
+      - PRICE_1M=${PRICE_1M}
+      - PRICE_3M=${PRICE_3M}
+      - PRICE_12M=${PRICE_12M}
+      - PRICE_PER_DEVICE=${PRICE_PER_DEVICE}
+      - CURRENCY=${CURRENCY}
+      - CRYPTOBOT_ENABLED=${CRYPTOBOT_ENABLED}
+      - CRYPTOBOT_TOKEN=${CRYPTOBOT_TOKEN}
+      - CRYPTOBOT_ASSET=${CRYPTOBOT_ASSET}
+      - YOOKASSA_ENABLED=${YOOKASSA_ENABLED}
+      - YOOKASSA_SHOP_ID=${YOOKASSA_SHOP_ID}
+      - YOOKASSA_SECRET_KEY=${YOOKASSA_SECRET_KEY}
+      - ROBOKASSA_ENABLED=${ROBOKASSA_ENABLED}
+      - ROBOKASSA_LOGIN=${ROBOKASSA_LOGIN}
+      - ROBOKASSA_PASSWORD1=${ROBOKASSA_PASSWORD1}
+      - ROBOKASSA_PASSWORD2=${ROBOKASSA_PASSWORD2}
+      - ROBOKASSA_IS_TEST=${ROBOKASSA_IS_TEST}
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - dudonya-net
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: dudonya-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - dudonya-net
+    depends_on:
+      - backend
+
+networks:
+  dudonya-net:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,167 @@
+{
+    "dns": {
+        "queryStrategy": "UseIP",
+        "servers": [
+            "1.1.1.1",
+            "1.0.0.1"
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10808,
+            "protocol": "socks",
+            "settings": {
+                "auth": "noauth",
+                "udp": true
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": false
+            },
+            "tag": "socks"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10809,
+            "protocol": "http",
+            "settings": {
+                "allowTransparent": false
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": false
+            },
+            "tag": "http"
+        }
+    ],
+    "meta": null,
+    "outbounds": [
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "185.16.213.6",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "R_km5hxsfjRUsnZfSOBYxB9DwShSIwYacXduHR8_9gE",
+                    "serverName": "internity.ru",
+                    "shortId": "dfcc5c5ac8507f95",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "proxy"
+        },
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        }
+    ],
+    "remarks": "🇷🇺 Россия",
+    "routing": {
+        "domainMatcher": "hybrid",
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "domain": [
+                    "domain:vpn.ecobuy.ltd",
+                    "domain:res.mycdn-me.ru",
+                    "domain:app.shukafish.site",
+                    "domain:api.shukafish.site",
+                    "domain:cdn.shukafish.site",
+                    "domain:media.shukafish.site",
+                    "domain:web.shukafish.site",
+                    "domain:portal.shukaclub.site",
+                    "domain:admin.shukaclub.site",
+                    "domain:static.shukaclub.site",
+                    "domain:assets.shukaclub.site",
+                    "domain:files.shukaclub.site",
+                    "domain:blog.shukalake.site",
+                    "domain:news.shukalake.site",
+                    "domain:docs.shukalake.site",
+                    "domain:help.shukalake.site",
+                    "domain:support.shukalake.site",
+                    "domain:status.shukariver.site",
+                    "domain:monitor.shukariver.site",
+                    "domain:metrics.shukariver.site",
+                    "domain:logs.shukariver.site",
+                    "domain:health.shukariver.site",
+                    "domain:auth.shukalove.site",
+                    "domain:login.shukalove.site",
+                    "domain:account.shukalove.site",
+                    "domain:profile.shukalove.site",
+                    "domain:members.shukalove.site",
+                    "domain:dashboard.shukalife.site",
+                    "domain:panel.shukalife.site",
+                    "domain:console.shukalife.site",
+                    "domain:manage.shukalife.site",
+                    "domain:control.shukalife.site",
+                    "domain:search.shukahunt.site",
+                    "domain:catalog.shukahunt.site",
+                    "domain:store.shukahunt.site",
+                    "domain:shop.shukahunt.site",
+                    "domain:market.shukahunt.site",
+                    "domain:mail.shukacatch.site",
+                    "domain:smtp.shukacatch.site",
+                    "domain:imap.shukacatch.site",
+                    "domain:pop.shukacatch.site",
+                    "domain:webmail.shukacatch.site",
+                    "domain:dev.shukabait.site",
+                    "domain:test.shukabait.site",
+                    "domain:stage.shukabait.site",
+                    "domain:preview.shukabait.site",
+                    "domain:sandbox.shukabait.site",
+                    "domain:mobile.shukaspin.site",
+                    "domain:music.shukaspin.site",
+                    "domain:video.shukaspin.site",
+                    "domain:images.shukaspin.site",
+                    "domain:download.shukaspin.site"
+                ],
+                "outboundTag": "proxy",
+                "ruleTag": "shuka-subscription-hosts",
+                "type": "field"
+            },
+            {
+                "outboundTag": "direct",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "type": "field"
+            }
+        ]
+    }
+}

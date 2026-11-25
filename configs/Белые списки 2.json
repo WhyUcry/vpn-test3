@@ -1,0 +1,573 @@
+{
+    "dns": {
+        "queryStrategy": "UseIPv4",
+        "servers": [
+            "1.1.1.1",
+            "8.8.8.8",
+            "8.8.4.4"
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "127.0.0.1",
+            "port": 10808,
+            "protocol": "socks",
+            "settings": {
+                "auth": "noauth",
+                "udp": true
+            },
+            "sniffing": {
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ],
+                "enabled": true,
+                "routeOnly": true
+            },
+            "tag": "socks"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10801,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1",
+                "network": "tcp,udp",
+                "port": 0
+            },
+            "tag": "entry-tier2"
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 10802,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1",
+                "network": "tcp,udp",
+                "port": 0
+            },
+            "tag": "entry-tier3"
+        }
+    ],
+    "log": {
+        "loglevel": "warning"
+    },
+    "meta": {
+        "routingTags": [
+            "universal"
+        ]
+    },
+    "observatory": {
+        "enableConcurrency": true,
+        "probeInterval": "1m",
+        "probeUrl": "http://health.mantaray-core/",
+        "subjectSelector": [
+            "p1-",
+            "tier2-",
+            "tier3-",
+            "udp-tier2-"
+        ]
+    },
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        },
+        {
+            "protocol": "loopback",
+            "settings": {
+                "inboundTag": "entry-tier2"
+            },
+            "tag": "loop_to_tier2"
+        },
+        {
+            "protocol": "loopback",
+            "settings": {
+                "inboundTag": "entry-tier3"
+            },
+            "tag": "loop_to_tier3"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "193.124.94.153",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "lxTQST37knG1eCPA0UscdPHzTmSnMgito5r4o0vZils",
+                    "serverName": "promo-digital.wb.ru",
+                    "shortId": "4e9b7a1c5f3d2e68",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "p1-germany-1-6yzR564heJ"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "194.87.242.41",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "ub1PHBkdqrCahRc4rgavIBm9EvIDWrZi0ff_OvEv8FU",
+                    "serverName": "stream.selectus.ru",
+                    "shortId": "b0f839d2a5c7e146",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "p1-frda-4DHRXW7d8V"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "185.70.223.43",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "n6uqg76Ky-Vl-HUDF_iwZTaK3L_iQ_YoFP92U8PPYS0",
+                    "serverName": "conf.emaar.ru",
+                    "shortId": "6d2a8e5f1b9c3704",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "p1-fi+-jJrnL2m8f1"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "91.215.43.168",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "xhttp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": [
+                        "http/1.1",
+                        "h2"
+                    ],
+                    "fingerprint": "edge",
+                    "pinnedPeerCertSha256": "16c880818ae55937990617ba393568371fa1cce1d144dea2079e370a92a76b3b",
+                    "serverName": "static.rtbcdn.ru"
+                },
+                "xhttpSettings": {
+                    "host": "static.rtbcdn.ru",
+                    "mode": "packet-up",
+                    "path": "/xhttp",
+                    "scMaxEachPostBytes": "500000-1000000",
+                    "scMinPostsIntervalMs": "30-50",
+                    "xPaddingBytes": "100-1000",
+                    "xmux": {
+                        "cMaxReuseTimes": "64-128",
+                        "hKeepAlivePeriod": 45,
+                        "hMaxRequestTimes": "50000-60000",
+                        "hMaxReusableSecs": 300,
+                        "maxConcurrency": 4,
+                        "maxConnections": 0
+                    }
+                }
+            },
+            "tag": "tier2-ttt-q6KIxPMbP1"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "91.215.43.168",
+                        "port": 443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "xhttp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": [
+                        "http/1.1",
+                        "h2"
+                    ],
+                    "fingerprint": "edge",
+                    "pinnedPeerCertSha256": "16c880818ae55937990617ba393568371fa1cce1d144dea2079e370a92a76b3b",
+                    "serverName": "static.rtbcdn.ru"
+                },
+                "xhttpSettings": {
+                    "host": "static.rtbcdn.ru",
+                    "mode": "stream-up",
+                    "path": "/xhttp",
+                    "scMaxEachPostBytes": "500000-1000000",
+                    "scMinPostsIntervalMs": "30-50",
+                    "xPaddingBytes": "100-1000",
+                    "xmux": {
+                        "cMaxReuseTimes": 0,
+                        "hKeepAlivePeriod": 20,
+                        "hMaxRequestTimes": 0,
+                        "hMaxReusableSecs": 0,
+                        "maxConcurrency": 4,
+                        "maxConnections": 0
+                    }
+                }
+            },
+            "tag": "udp-tier2-ttt-q6KIxPMbP1"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "178.248.232.105",
+                        "port": 55443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "UoWXZIbLDIDA1opu4ekUYLNWgci5gLgghMJ07ApYTGo",
+                    "serverName": "rutube.ru",
+                    "shortId": "228c1a2e913d1f05",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "tier3-mt-i9cSIHCtFI"
+        },
+        {
+            "protocol": "vless",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "178.248.232.105",
+                        "port": 55443,
+                        "users": [
+                            {
+                                "encryption": "none",
+                                "flow": "xtls-rprx-vision",
+                                "id": "89f55644-6d2c-4e65-8cab-ff72f2d78746"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "realitySettings": {
+                    "fingerprint": "qq",
+                    "publicKey": "UoWXZIbLDIDA1opu4ekUYLNWgci5gLgghMJ07ApYTGo",
+                    "serverName": "rutube.ru",
+                    "shortId": "228c1a2e913d1f05",
+                    "spiderX": "/"
+                },
+                "security": "reality",
+                "tcpSettings": {
+                    "header": {
+                        "type": "none"
+                    }
+                }
+            },
+            "tag": "tier3-cu2-lOU11r205D"
+        }
+    ],
+    "remarks": "🇩🇪 Белые списки 🧶",
+    "routing": {
+        "balancers": [
+            {
+                "fallbackTag": "loop_to_tier2",
+                "selector": [
+                    "p1-"
+                ],
+                "strategy": {
+                    "settings": {
+                        "cost_step": 0,
+                        "maxRTT": "5s"
+                    },
+                    "type": "leastLoad"
+                },
+                "tag": "lb_ping"
+            },
+            {
+                "fallbackTag": "loop_to_tier3",
+                "selector": [
+                    "tier2-"
+                ],
+                "strategy": {
+                    "type": "leastLoad"
+                },
+                "tag": "lb_tier2"
+            },
+            {
+                "selector": [
+                    "tier3-"
+                ],
+                "strategy": {
+                    "settings": {
+                        "cost_step": 0,
+                        "maxRTT": "15s"
+                    },
+                    "type": "leastLoad"
+                },
+                "tag": "lb_tier3"
+            },
+            {
+                "fallbackTag": "loop_to_tier3",
+                "selector": [
+                    "udp-tier2-"
+                ],
+                "strategy": {
+                    "type": "leastLoad"
+                },
+                "tag": "lb_tier2-udp"
+            }
+        ],
+        "domainMatcher": "hybrid",
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "balancerTag": "lb_ping",
+                "domain": [
+                    "domain:vpn.ecobuy.ltd",
+                    "domain:res.mycdn-me.ru",
+                    "domain:app.shukafish.site",
+                    "domain:api.shukafish.site",
+                    "domain:cdn.shukafish.site",
+                    "domain:media.shukafish.site",
+                    "domain:web.shukafish.site",
+                    "domain:portal.shukaclub.site",
+                    "domain:admin.shukaclub.site",
+                    "domain:static.shukaclub.site",
+                    "domain:assets.shukaclub.site",
+                    "domain:files.shukaclub.site",
+                    "domain:blog.shukalake.site",
+                    "domain:news.shukalake.site",
+                    "domain:docs.shukalake.site",
+                    "domain:help.shukalake.site",
+                    "domain:support.shukalake.site",
+                    "domain:status.shukariver.site",
+                    "domain:monitor.shukariver.site",
+                    "domain:metrics.shukariver.site",
+                    "domain:logs.shukariver.site",
+                    "domain:health.shukariver.site",
+                    "domain:auth.shukalove.site",
+                    "domain:login.shukalove.site",
+                    "domain:account.shukalove.site",
+                    "domain:profile.shukalove.site",
+                    "domain:members.shukalove.site",
+                    "domain:dashboard.shukalife.site",
+                    "domain:panel.shukalife.site",
+                    "domain:console.shukalife.site",
+                    "domain:manage.shukalife.site",
+                    "domain:control.shukalife.site",
+                    "domain:search.shukahunt.site",
+                    "domain:catalog.shukahunt.site",
+                    "domain:store.shukahunt.site",
+                    "domain:shop.shukahunt.site",
+                    "domain:market.shukahunt.site",
+                    "domain:mail.shukacatch.site",
+                    "domain:smtp.shukacatch.site",
+                    "domain:imap.shukacatch.site",
+                    "domain:pop.shukacatch.site",
+                    "domain:webmail.shukacatch.site",
+                    "domain:dev.shukabait.site",
+                    "domain:test.shukabait.site",
+                    "domain:stage.shukabait.site",
+                    "domain:preview.shukabait.site",
+                    "domain:sandbox.shukabait.site",
+                    "domain:mobile.shukaspin.site",
+                    "domain:music.shukaspin.site",
+                    "domain:video.shukaspin.site",
+                    "domain:images.shukaspin.site",
+                    "domain:download.shukaspin.site"
+                ],
+                "ruleTag": "shuka-subscription-hosts",
+                "type": "field"
+            },
+            {
+                "domain": [
+                    "domain:ru",
+                    "domain:su",
+                    "domain:xn--p1ai",
+                    "domain:moscow",
+                    "domain:ya.cc",
+                    "domain:yandex.com",
+                    "domain:yandex.net",
+                    "domain:yango.com",
+                    "domain:vk.com",
+                    "domain:vk.cc",
+                    "domain:mvk.com",
+                    "domain:mycdn.me",
+                    "domain:my.com",
+                    "domain:my.games",
+                    "domain:ok.me",
+                    "domain:kaspersky.com",
+                    "domain:ozon.com",
+                    "domain:ozon.by",
+                    "domain:ozon.kz",
+                    "domain:wildberries.by",
+                    "domain:wildberries.kz",
+                    "domain:2gis.com",
+                    "domain:magnit.com",
+                    "domain:fix-price.com",
+                    "domain:x5.tech",
+                    "domain:megafon.com",
+                    "domain:moex.com",
+                    "domain:okko.tv",
+                    "domain:okko.sport",
+                    "domain:boosty.to",
+                    "domain:lenta.com",
+                    "domain:meduza.io",
+                    "domain:premier.one",
+                    "domain:hh.by",
+                    "domain:hh.kz",
+                    "domain:mosmetro.tech",
+                    "domain:avs.io",
+                    "domain:rbsgate.com"
+                ],
+                "outboundTag": "direct",
+                "type": "field"
+            },
+            {
+                "outboundTag": "direct",
+                "protocol": [
+                    "bittorrent"
+                ],
+                "type": "field"
+            },
+            {
+                "balancerTag": "lb_ping",
+                "inboundTag": [
+                    "socks-in",
+                    "http-in",
+                    "socks",
+                    "http",
+                    "tun-in"
+                ],
+                "network": "tcp,udp",
+                "type": "field"
+            },
+            {
+                "network": "udp",
+                "outboundTag": "block",
+                "port": "443",
+                "ruleTag": "shuka-block-quic",
+                "type": "field"
+            },
+            {
+                "balancerTag": "lb_tier2-udp",
+                "inboundTag": [
+                    "entry-tier2"
+                ],
+                "network": "udp",
+                "ruleTag": "shuka-udp-split",
+                "type": "field"
+            },
+            {
+                "balancerTag": "lb_tier2",
+                "inboundTag": [
+                    "entry-tier2"
+                ],
+                "type": "field"
+            },
+            {
+                "balancerTag": "lb_tier3",
+                "inboundTag": [
+                    "entry-tier3"
+                ],
+                "type": "field"
+            }
+        ]
+    }
+}
