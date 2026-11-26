@@ -13,7 +13,6 @@ from loguru import logger
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from bot.handlers import router
-from bot.payments import yookassa
 
 
 # Configuration
@@ -53,9 +52,6 @@ async def main():
 
     configure_logging()
     logger.info("Starting Dudonya VPN Bot...")
-
-    # Configure YooKassa if enabled
-    yookassa.configure()
 
     # Initialize bot and dispatcher
     bot = Bot(

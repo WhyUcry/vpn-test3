@@ -21,7 +21,7 @@ from backend.db import SessionLocal
 from backend.models import User, Subscription, SubscriptionStatus, PaymentPurpose
 from backend.slot_generator import create_device_slots, add_device_slot
 from bot import texts, keyboards
-from bot.payments import cryptobot, yookassa, robokassa
+from bot.payments import cryptobot, freekassa
 
 
 # Configuration
@@ -36,8 +36,7 @@ PRICE_PER_DEVICE = int(os.getenv("PRICE_PER_DEVICE", "99"))
 CURRENCY = os.getenv("CURRENCY", "RUB")
 
 CRYPTOBOT_ENABLED = os.getenv("CRYPTOBOT_ENABLED", "true").lower() == "true"
-YOOKASSA_ENABLED = os.getenv("YOOKASSA_ENABLED", "true").lower() == "true"
-ROBOKASSA_ENABLED = os.getenv("ROBOKASSA_ENABLED", "true").lower() == "true"
+FREEKASSA_ENABLED = os.getenv("FREEKASSA_ENABLED", "true").lower() == "true"
 
 router = Router()
 
@@ -211,7 +210,7 @@ async def callback_buy(callback: CallbackQuery):
     await callback.message.edit_text(
         text,
         reply_markup=keyboards.get_payment_method_keyboard(
-            plan, CRYPTOBOT_ENABLED, YOOKASSA_ENABLED, ROBOKASSA_ENABLED
+            plan, CRYPTOBOT_ENABLED, FREEKASSA_ENABLED
         )
     )
     await callback.answer()
@@ -303,18 +302,10 @@ async def callback_pay(callback: CallbackQuery):
                     purpose.value, f"Дудоня VPN — {plan}"
                 )
 
-            elif provider_name == "yookassa":
-                result = await yookassa.create_payment(
+            elif provider_name == "freekassa":
+                result = await freekassa.create_payment(
                     db, user.id, amount, CURRENCY,
                     purpose.value, f"Дудоня VPN — {plan}",
-                    return_url=f"https://t.me/YOUR_BOT_USERNAME"  # TODO
-                )
-
-            elif provider_name == "robokassa":
-                result = await robokassa.create_payment(
-                    db, user.id, amount, CURRENCY,
-                    purpose.value, f"Дудоня VPN — {plan}",
-                    result_url=f"{DOMAIN}/webhooks/robokassa",
                     success_url=f"https://t.me/YOUR_BOT_USERNAME",
                     fail_url=f"https://t.me/YOUR_BOT_USERNAME"
                 )
@@ -414,22 +405,7 @@ async def cmd_stats(message: Message):
             Payment.status == "paid"
         ).scalar() or 0
 
-        revenue_yookassa = db.query(func.sum(Payment.amount)).filter(
-            Payment.provider == PaymentProvider.YOOKASSA,
-            Payment.status == "paid"
-        ).scalar() or 0
-
-        revenue_robokassa = db.query(func.sum(Payment.amount)).filter(
-            Payment.provider == PaymentProvider.ROBOKASSA,
-            Payment.status == "paid"
-        ).scalar() or 0
-
-        text = texts.STATS_TEMPLATE.format(
-            total_users=total_users,
-            active_subscriptions=active_subscriptions,
-            revenue_cryptobot=revenue_cryptobot / 100,
-            revenue_yookassa=revenue_yookassa / 100,
-            revenue_robokassa=revenue_robokassa / 100,
+            revenue_freekassa=revenue_freekassa / 100,
             date=datetime.utcnow().strftime("%d.%m.%Y %H:%M")
         )
 

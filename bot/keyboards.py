@@ -45,15 +45,14 @@ def get_pricing_keyboard() -> InlineKeyboardMarkup:
 
 
 # Payment method keyboard
-def get_payment_method_keyboard(plan: str, cryptobot_enabled: bool, yookassa_enabled: bool, robokassa_enabled: bool) -> InlineKeyboardMarkup:
+def get_payment_method_keyboard(plan: str, cryptobot_enabled: bool, freekassa_enabled: bool) -> InlineKeyboardMarkup:
     """
     Get payment method selection keyboard.
 
     Args:
         plan: Plan identifier (1m, 3m, 12m, extra_device)
         cryptobot_enabled: CryptoBot enabled
-        yookassa_enabled: YooKassa enabled
-        robokassa_enabled: Robokassa enabled
+        freekassa_enabled: Freekassa enabled
 
     Returns:
         InlineKeyboardMarkup
@@ -63,11 +62,8 @@ def get_payment_method_keyboard(plan: str, cryptobot_enabled: bool, yookassa_ena
     if cryptobot_enabled:
         builder.button(text="💎 CryptoBot", callback_data=f"pay:cryptobot:{plan}")
 
-    if yookassa_enabled:
-        builder.button(text="💳 ЮKassa", callback_data=f"pay:yookassa:{plan}")
-
-    if robokassa_enabled:
-        builder.button(text="💳 Робокасса", callback_data=f"pay:robokassa:{plan}")
+    if freekassa_enabled:
+        builder.button(text="💳 Фрикасса", callback_data=f"pay:freekassa:{plan}")
 
     builder.button(text="◀️ Назад", callback_data="pricing")
 

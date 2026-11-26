@@ -60,7 +60,7 @@ EXTRA_DEVICE_INFO = """
 
 После оплаты вы сможете использовать подписку ещё на одном устройстве.
 
-💡 <i>Просто обновите подписку в приложении — новый слот появится автоматически</i>
+💡 <i>Прос��о обновите подписку в приложении — новый слот появится автоматически</i>
 """
 
 EXTRA_DEVICE_LIMIT_REACHED = """
@@ -132,7 +132,7 @@ INSTRUCTIONS_HAPP = """
 
 2️⃣ Откройте приложение → нажмите <b>«+»</b>
 
-3️⃣ Выберите <b>«Импорт подписки»</b> или <b>«Добавить из буфера»</b>
+3️⃣ Выберите <b>«Импорт подписки»</b> или <b>«Д��бавить из буфера»</b>
 
 4️⃣ Вставьте вашу ссылку подписки
 
@@ -213,7 +213,7 @@ SUPPORT_TEXT = """
 
 Возникли вопросы или проблемы?
 
-📧 Email: support@dudonya-vpn.com
+📧 Email: support@dudonya.online
 💬 Telegram: @dudonya_support
 
 Мы ответим в течение 24 часов.
@@ -227,9 +227,8 @@ STATS_TEMPLATE = """
 📱 Активных подписок: <b>{active_subscriptions}</b>
 💰 Выручка за всё время:
 
-💳 CryptoBot: <b>{revenue_cryptobot} USDT</b>
-💳 ЮKassa: <b>{revenue_yookassa} RUB</b>
-💳 Робокасса: <b>{revenue_robokassa} RUB</b>
+💎 CryptoBot: <b>{revenue_cryptobot} USDT</b>
+💳 Фрикасса: <b>{revenue_freekassa} RUB</b>
 
 📅 Дата: <b>{date}</b>
 """

@@ -25,8 +25,7 @@ class PaymentStatus(str, enum.Enum):
 class PaymentProvider(str, enum.Enum):
     """Payment provider enum."""
     CRYPTOBOT = "cryptobot"
-    YOOKASSA = "yookassa"
-    ROBOKASSA = "robokassa"
+    FREEKASSA = "freekassa"
 
 
 class PaymentPurpose(str, enum.Enum):
