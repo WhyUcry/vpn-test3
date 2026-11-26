@@ -96,7 +96,7 @@ class Payment(Base):
     purpose = Column(SQLEnum(PaymentPurpose), nullable=False)
     provider_payment_id = Column(String, unique=True, nullable=False, index=True)
     status = Column(SQLEnum(PaymentStatus), default=PaymentStatus.PENDING, nullable=False)
-    metadata = Column(String, nullable=True)  # JSON string for additional data
+    extra_data = Column(String, nullable=True)  # JSON string for additional data
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     paid_at = Column(DateTime, nullable=True)
 

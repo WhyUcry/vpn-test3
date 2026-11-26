@@ -15,10 +15,10 @@
 
 ```bash
 # Получите SSH доступ в панели управления хостингом
-ssh your_username@server261.hosting.reg.ru
+ssh u1358579@server261.hosting.reg.ru
 
 # Или через конкретный IP
-ssh your_username@<IP адрес>
+ssh u135857@213.189.222.68
 ```
 
 ### Шаг 2: Проверка установленного ПО
@@ -164,7 +164,7 @@ nano configs/servers.json
 ```json
 {
   "configs": [
-    "vless://{{UUID}}@your-server.com:443?type=tcp&security=tls&sni=your-server.com#Dudonya-{{SHORT_ID}}"
+    "vless://{{UUID}}@vpn.dudonya.online:443?type=tcp&security=tls&sni=vpn.dudonya.online#Dudonya-{{SHORT_ID}}"
   ]
 }
 ```
