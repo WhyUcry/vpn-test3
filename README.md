@@ -5,12 +5,13 @@
 ## 🚀 Возможности
 
 - 📱 **Telegram-бот** с полным UI (aiogram 3.x)
-- 💳 **3 платежных провайдера**: CryptoBot, ЮKassa, Робокасса
+- 💳 **2 платежных провайдера**: CryptoBot, Freekassa
 - 🔐 **Мягкий лимит устройств** (1-5 на подписку)
 - 📊 **Subscription API** с правильными заголовками
 - 🔄 **Стабильные UUID** между запросами
 - 🌐 **JSON конфиги** с поддержкой шаблонов `{{UUID}}`, `{{SHORT_ID}}`
 - 🐳 **Docker Compose** с автоматическим SSL (Caddy)
+- 🚀 **Автоматический деплой** через GitHub Actions
 - 📖 **Подробные инструкции** для 5 VPN-клиентов
 
 ## 📂 Структура проекта
@@ -54,8 +55,7 @@ vpn-test3/
 **Bot:**
 - aiogram 3.x
 - CryptoBot API
-- YooKassa SDK
-- Robokassa
+- Freekassa API
 
 **Инфраструктура:**
 - Docker + Docker Compose
@@ -110,7 +110,21 @@ python main.py
 Backend: `http://localhost:8000`  
 Бо��: работает через Telegram polling
 
-## 🌐 Production Deploy (Ubuntu 22.04)
+## 🌐 Production Deploy
+
+### Вариант 1: Автоматический деплой через GitHub Actions (рекомендуется)
+
+Настройте автоматический деплой при каждом push в репозиторий:
+
+📖 **См. подробную инструкцию:** [DEPLOY_GITHUB.md](DEPLOY_GITHUB.md)
+
+**Преимущества:**
+- ✅ Автоматический деплой при push
+- ✅ Нет необходимости вручную подключаться к серверу
+- ✅ История деплоев в GitHub Actions
+- ✅ Возможность откатиться к предыдущей версии
+
+### Вариант 2: Ручной деплой (Ubuntu 22.04)
 
 ### Шаг 1: Подготовка сервера
 
@@ -213,15 +227,11 @@ CRYPTOBOT_ENABLED=true
 CRYPTOBOT_TOKEN=<ваш токен>
 CRYPTOBOT_ASSET=USDT
 
-YOOKASSA_ENABLED=true
-YOOKASSA_SHOP_ID=<ваш shop_id>
-YOOKASSA_SECRET_KEY=<ваш secret>
-
-ROBOKASSA_ENABLED=true
-ROBOKASSA_LOGIN=<ваш login>
-ROBOKASSA_PASSWORD1=<password1>
-ROBOKASSA_PASSWORD2=<password2>
-ROBOKASSA_IS_TEST=false
+FREEKASSA_ENABLED=true
+FREEKASSA_SHOP_ID=<ваш shop_id>
+FREEKASSA_SECRET_WORD_1=<secret_word_1>
+FREEKASSA_SECRET_WORD_2=<secret_word_2>
+FREEKASSA_API_KEY=<api_key>
 ```
 
 #### 5.2. Обновите Caddyfile
@@ -520,7 +530,9 @@ curl -I https://vpn.example.com/sub/<token>
 **Решение:**
 1. Проверьте токены в `.env`
 2. Проверьте логи бота на ошибки API
-3. Убедитесь, что webhook URL доступен (для YooKassa/Robokassa)
+3. Убедитесь, что webhook URL настроены в платежных системах:
+   - CryptoBot: настраивается через `paid_btn_url`
+   - Freekassa: `https://your-domain.com/webhook/freekassa`
 
 ## 📊 Мониторинг
 

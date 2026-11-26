@@ -10,7 +10,7 @@ services:
       - CONFIGS_DIR=/app/configs
       - BASE_DEVICES=${BASE_DEVICES}
       - MAX_DEVICES=${MAX_DEVICES}
-      - LOG_LEVEL=INFO
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
       - ./configs:/app/configs:ro
       - ./data:/app/data
@@ -32,6 +32,7 @@ services:
     restart: unless-stopped
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
+      - BOT_USERNAME=${BOT_USERNAME}
       - ADMIN_ID=${ADMIN_ID}
       - DOMAIN=${DOMAIN}
       - DATABASE_URL=${DATABASE_URL}
@@ -50,7 +51,7 @@ services:
       - FREEKASSA_SECRET_WORD_1=${FREEKASSA_SECRET_WORD_1}
       - FREEKASSA_SECRET_WORD_2=${FREEKASSA_SECRET_WORD_2}
       - FREEKASSA_API_KEY=${FREEKASSA_API_KEY}
-      - LOG_LEVEL=INFO
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs

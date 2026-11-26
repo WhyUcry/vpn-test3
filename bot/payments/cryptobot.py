@@ -14,6 +14,7 @@ CRYPTOBOT_ENABLED = os.getenv("CRYPTOBOT_ENABLED", "true").lower() == "true"
 CRYPTOBOT_TOKEN = os.getenv("CRYPTOBOT_TOKEN", "")
 CRYPTOBOT_ASSET = os.getenv("CRYPTOBOT_ASSET", "USDT")
 CRYPTOBOT_API_URL = "https://pay.crypt.bot/api"
+BOT_USERNAME = os.getenv("BOT_USERNAME", "your_bot")
 
 
 class CryptoBotError(Exception):
@@ -67,7 +68,7 @@ async def create_invoice(
         "amount": str(amount),
         "description": description,
         "paid_btn_name": "callback",
-        "paid_btn_url": f"https://t.me/YOUR_BOT_USERNAME",  # TODO: Replace with actual bot username
+        "paid_btn_url": f"https://t.me/{BOT_USERNAME}",
         "payload": invoice_id
     }
 
@@ -223,10 +224,19 @@ def process_webhook(db: Session, webhook_data: Dict[str, Any]) -> bool:
             paid_at=datetime.utcnow()
         )
         db.add(payment)
+        db.flush()  # Get payment ID without committing
 
         # Remove pending payment
         db.delete(pending)
         db.commit()
+
+        # Activate subscription
+        from backend.payment_processor import process_successful_payment
+        success = process_successful_payment(db, payment)
+
+        if not success:
+            logger.error(f"Failed to activate subscription for payment {invoice_id}")
+            # Payment is still recorded, manual intervention may be needed
 
         logger.info(f"CryptoBot payment processed: {invoice_id}")
         return True

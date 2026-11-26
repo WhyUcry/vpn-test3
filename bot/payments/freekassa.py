@@ -215,10 +215,19 @@ def process_webhook(db: Session, params: Dict[str, Any]) -> bool:
             paid_at=datetime.utcnow()
         )
         db.add(payment)
+        db.flush()  # Get payment ID without committing
 
         # Remove pending payment
         db.delete(pending)
         db.commit()
+
+        # Activate subscription
+        from backend.payment_processor import process_successful_payment
+        success = process_successful_payment(db, payment)
+
+        if not success:
+            logger.error(f"Failed to activate subscription for payment {intid}")
+            # Payment is still recorded, manual intervention may be needed
 
         logger.info(f"Freekassa payment processed: {intid}")
         return True

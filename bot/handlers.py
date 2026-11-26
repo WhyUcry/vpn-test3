@@ -26,6 +26,7 @@ from bot.payments import cryptobot, freekassa
 
 # Configuration
 DOMAIN = os.getenv("DOMAIN", "https://vpn.example.com")
+BOT_USERNAME = os.getenv("BOT_USERNAME", "your_bot")
 ADMIN_ID = int(os.getenv("ADMIN_ID", "0"))
 BASE_DEVICES = int(os.getenv("BASE_DEVICES", "1"))
 MAX_DEVICES = int(os.getenv("MAX_DEVICES", "5"))
@@ -306,8 +307,8 @@ async def callback_pay(callback: CallbackQuery):
                 result = await freekassa.create_payment(
                     db, user.id, amount, CURRENCY,
                     purpose.value, f"Дудоня VPN — {plan}",
-                    success_url=f"https://t.me/YOUR_BOT_USERNAME",
-                    fail_url=f"https://t.me/YOUR_BOT_USERNAME"
+                    success_url=f"https://t.me/{BOT_USERNAME}",
+                    fail_url=f"https://t.me/{BOT_USERNAME}"
                 )
 
             else:
@@ -402,9 +403,19 @@ async def cmd_stats(message: Message):
         # Calculate revenue by provider
         revenue_cryptobot = db.query(func.sum(Payment.amount)).filter(
             Payment.provider == PaymentProvider.CRYPTOBOT,
-            Payment.status == "paid"
+            Payment.status == PaymentStatus.PAID
         ).scalar() or 0
 
+        revenue_freekassa = db.query(func.sum(Payment.amount)).filter(
+            Payment.provider == PaymentProvider.FREEKASSA,
+            Payment.status == PaymentStatus.PAID
+        ).scalar() or 0
+
+        # Format statistics text
+        text = texts.STATS_TEMPLATE.format(
+            total_users=total_users,
+            active_subscriptions=active_subscriptions,
+            revenue_cryptobot=revenue_cryptobot / 100,
             revenue_freekassa=revenue_freekassa / 100,
             date=datetime.utcnow().strftime("%d.%m.%Y %H:%M")
         )

@@ -201,6 +201,77 @@ async def rotate_subscription(
     )
 
 
+@app.post("/webhook/cryptobot")
+async def webhook_cryptobot(request: Request, db: Session = Depends(get_db_session)):
+    """
+    Handle CryptoBot webhook.
+
+    Args:
+        request: FastAPI request
+        db: Database session
+
+    Returns:
+        Status response
+    """
+    try:
+        data = await request.json()
+        logger.info(f"Received CryptoBot webhook")
+
+        # Import payment processor
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from bot.payments import cryptobot
+
+        # Process webhook
+        success = cryptobot.process_webhook(db, data)
+
+        if success:
+            return {"ok": True}
+        else:
+            raise HTTPException(status_code=400, detail="Webhook processing failed")
+
+    except Exception as e:
+        logger.error(f"CryptoBot webhook error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@app.post("/webhook/freekassa")
+async def webhook_freekassa(request: Request, db: Session = Depends(get_db_session)):
+    """
+    Handle Freekassa webhook.
+
+    Args:
+        request: FastAPI request
+        db: Database session
+
+    Returns:
+        Status response
+    """
+    try:
+        # Freekassa sends form data
+        form_data = await request.form()
+        params = dict(form_data)
+
+        logger.info(f"Received Freekassa webhook")
+
+        # Import payment processor
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from bot.payments import freekassa
+
+        # Process webhook
+        success = freekassa.process_webhook(db, params)
+
+        if success:
+            return {"ok": True}
+        else:
+            raise HTTPException(status_code=400, detail="Webhook processing failed")
+
+    except Exception as e:
+        logger.error(f"Freekassa webhook error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
 if __name__ == "__main__":
     import uvicorn
 
