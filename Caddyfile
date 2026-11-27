@@ -1,18 +1,26 @@
-# Replace vpn.example.com with your actual domain
 {
-    email admin@example.com
+    email admin@dudonya.online
 }
 
-vpn.example.com {
-    # Reverse proxy to backend
-    reverse_proxy backend:8000
+dudonya.online {
+    # API and webhook endpoints - proxy to backend
+    handle /sub/* {
+        reverse_proxy backend:8000
+    }
 
-    # Security headers
-    header {
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        Referrer-Policy "no-referrer-when-downgrade"
-        -Server
+    handle /webhook/* {
+        reverse_proxy backend:8000
+    }
+
+    handle /health {
+        reverse_proxy backend:8000
+    }
+
+    # Serve landing page for all other requests
+    handle {
+        root * /srv/landing
+        file_server
+        try_files {path} /index.html
     }
 
     # Logs

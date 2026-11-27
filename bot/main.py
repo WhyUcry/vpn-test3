@@ -62,6 +62,10 @@ async def main():
     dp = Dispatcher()
     dp.include_router(router)
 
+    # Start notification service in background
+    from bot.notification_service import process_notifications
+    notification_task = asyncio.create_task(process_notifications(bot, check_interval=10))
+
     # Start polling
     logger.info("Bot started, polling for updates...")
     try:
@@ -72,6 +76,13 @@ async def main():
         logger.error(f"Bot error: {e}", exc_info=True)
         raise
     finally:
+        # Cancel notification task
+        notification_task.cancel()
+        try:
+            await notification_task
+        except asyncio.CancelledError:
+            pass
+
         await bot.session.close()
 
 

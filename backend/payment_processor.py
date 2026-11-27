@@ -94,6 +94,10 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
         db.commit()
 
         logger.info(f"Subscription extended until {active_sub.expires_at}")
+
+        # Notify user
+        notify_user_payment_success(db, user, active_sub, payment)
+
         return True
 
     else:
@@ -122,6 +126,10 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
             f"Subscription created: id={subscription.id}, "
             f"token={token[:8]}..., expires={expires_at}"
         )
+
+        # Notify user
+        notify_user_payment_success(db, user, subscription, payment)
+
         return True
 
 
@@ -165,25 +173,50 @@ def _add_extra_device(db: Session, payment: Payment, user: User) -> bool:
     return True
 
 
-def notify_user_payment_success(user_telegram_id: int, subscription_token: str, expires_at: datetime):
+def notify_user_payment_success(
+    db: Session,
+    user: User,
+    subscription: Subscription,
+    payment: Payment
+):
     """
-    Send notification to user about successful payment.
-
-    This should be called asynchronously or via a message queue.
-    For now, it's a placeholder that logs the notification.
+    Create notification for user about successful payment.
 
     Args:
-        user_telegram_id: User's Telegram ID
-        subscription_token: Subscription token
-        expires_at: Subscription expiry date
+        db: Database session
+        user: User object
+        subscription: Subscription object
+        payment: Payment object
     """
-    # TODO: Implement actual notification via bot
-    # This could be done via:
-    # 1. Redis pub/sub
-    # 2. Database flag that bot polls
-    # 3. Direct bot.send_message (requires bot instance)
+    from backend.models import Notification, NotificationType
+    import json
 
-    logger.info(
-        f"TODO: Notify user {user_telegram_id} about payment success. "
-        f"Token: {subscription_token[:8]}..., expires: {expires_at}"
-    )
+    try:
+        notification_data = {
+            "subscription_token": subscription.token,
+            "expires_at": subscription.expires_at.isoformat(),
+            "days": (subscription.expires_at - datetime.utcnow()).days,
+            "amount": payment.amount / 100,
+            "currency": payment.currency,
+            "provider": payment.provider.value,
+            "devices": subscription.base_devices + subscription.extra_devices
+        }
+
+        notification = Notification(
+            user_id=user.id,
+            telegram_id=user.telegram_id,
+            type=NotificationType.PAYMENT_SUCCESS,
+            subscription_id=subscription.id,
+            payment_id=payment.id,
+            data=json.dumps(notification_data),
+            sent=0
+        )
+        db.add(notification)
+        db.commit()
+
+        logger.info(
+            f"Created notification for user {user.telegram_id}: "
+            f"subscription {subscription.token[:8]}..."
+        )
+    except Exception as e:
+        logger.error(f"Failed to create notification: {e}", exc_info=True)

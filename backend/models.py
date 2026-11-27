@@ -118,3 +118,27 @@ class PendingPayment(Base):
     provider = Column(SQLEnum(PaymentProvider), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     expires_at = Column(DateTime, nullable=False)
+
+
+class NotificationType(str, enum.Enum):
+    """Notification type enum."""
+    PAYMENT_SUCCESS = "payment_success"
+    SUBSCRIPTION_EXTENDED = "subscription_extended"
+    DEVICE_ADDED = "device_added"
+    SUBSCRIPTION_EXPIRING = "subscription_expiring"
+
+
+class Notification(Base):
+    """Notification queue for bot."""
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    telegram_id = Column(Integer, nullable=False, index=True)
+    type = Column(SQLEnum(NotificationType), nullable=False)
+    subscription_id = Column(Integer, ForeignKey("subscriptions.id"), nullable=True)
+    payment_id = Column(Integer, ForeignKey("payments.id"), nullable=True)
+    data = Column(String, nullable=True)  # JSON string for additional data
+    sent = Column(Integer, default=0, nullable=False)  # 0 = pending, 1 = sent, 2 = failed
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    sent_at = Column(DateTime, nullable=True)

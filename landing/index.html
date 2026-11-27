@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дудоня VPN — Твой надежный доступ к свободному интернету</title>
+    <meta name="description" content="Быстрый и безопасный VPN для обхода блокировок. До 5 устройств, белые списки, мгновенная выдача через Telegram.">
+    <style>
+        :root {
+            --cream: #FFF8F0;
+            --peach: #FFD4B8;
+            --orange: #FFA066;
+            --dark-orange: #FF8243;
+            --text-dark: #4A3428;
+            --text-light: #8B6F5C;
+            --shadow: rgba(255, 130, 67, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--peach) 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated cat container */
+        .cat-container {
+            position: fixed;
+            top: 20px;
+            right: -100px;
+            font-size: 80px;
+            z-index: 1000;
+            animation: peekIn 3s ease-in-out infinite;
+        }
+
+        .cat {
+            display: inline-block;
+            filter: drop-shadow(0 4px 8px var(--shadow));
+        }
+
+        .tail {
+            display: inline-block;
+            animation: wagTail 0.5s ease-in-out infinite alternate;
+            transform-origin: left center;
+        }
+
+        @keyframes peekIn {
+            0%, 100% {
+                right: -100px;
+            }
+            50% {
+                right: 20px;
+            }
+        }
+
+        @keyframes wagTail {
+            0% {
+                transform: rotate(-10deg);
+            }
+            100% {
+                transform: rotate(10deg);
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-orange);
+            text-shadow: 2px 2px 4px var(--shadow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px var(--shadow);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-orange);
+        }
+
+        .feature p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* iOS-style Button */
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--dark-orange) 100%);
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px var(--shadow);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:active {
+            transform: scale(0.98);
+        }
+
+        /* How it works */
+        .how-it-works {
+            margin: 4rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .how-it-works h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark-orange);
+        }
+
+        .steps {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--dark-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--dark-orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .cat-container {
+                font-size: 60px;
+            }
+
+            @keyframes peekIn {
+                0%, 100% {
+                    right: -80px;
+                }
+                50% {
+                    right: 10px;
+                }
+            }
+        }
+
+        /* Decorative elements */
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--peach) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: blobMove 10s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .blob-1 {
+            top: 10%;
+            left: 10%;
+        }
+
+        .blob-2 {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        @keyframes blobMove {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(50px, -50px);
+            }
+            50% {
+                transform: translate(-30px, 30px);
+            }
+            75% {
+                transform: translate(30px, 50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Cat -->
+    <div class="cat-container">
+        <span class="cat">🦊<span class="tail">🍂</span></span>
+    </div>
+
+    <!-- Background blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="logo">🦊 Дудоня VPN</div>
+            <h1>Твой надежный доступ к свободному интернету</h1>
+            <p class="subtitle">
+                Быстрый, безопасный и удобный VPN-сервис с мгновенной выдачей подписки через Telegram
+            </p>
+
+            <!-- CTA Button -->
+            <a href="https://t.me/dudonyaVPN_bot" class="cta-button">
+                🚀 Подключить VPN
+            </a>
+
+            <!-- Features -->
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Безлимитный трафик</h3>
+                    <p>Никаких ограничений по скорости и объему данных</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h3>До 5 устройств</h3>
+                    <p>Используйте VPN на всех ваших гаджетах одновременно</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Белые списки</h3>
+                    <p>Доступ к заблокированным ресурсам без ограничений</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Высокая скорость</h3>
+                    <p>Стабильные серверы для комфортной работы и стриминга</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Мгновенная выдача</h3>
+                    <p>Подписка активируется сразу после оплаты</p>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <h3>Выгодные тарифы</h3>
+                    <p>От 199₽ в месяц с возможностью сэкономить при долгосрочной подписке</p>
+                </div>
+            </div>
+
+            <!-- How it works -->
+            <div class="how-it-works">
+                <h2>Как это работает?</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>Откройте бота в Telegram и выберите тариф</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>Оплатите удобным способом (Крипта или Фрикасса)</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>Получите ссылку подписки мгновенно</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>Добавьте подписку в приложение и подключайтесь!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Button (repeat) -->
+            <a href="https://t.me/dudonyaVPN_bot" class="cta-button" style="margin-top: 2rem;">
+                🤖 Начать в Telegram
+            </a>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>🌐 Работает с: Happ, v2rayNG, Streisand, Hiddify, Shadowrocket</p>
+                <p style="margin-top: 1rem;">
+                    💬 Поддержка: <a href="https://t.me/dudonya_support">@dudonya_support</a> |
+                    📧 <a href="mailto:support@dudonya.online">support@dudonya.online</a>
+                </p>
+                <p style="margin-top: 1rem; opacity: 0.6;">
+                    © 2024 Дудоня VPN. Все права защищены.
+                </p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -142,3 +142,31 @@ def get_copy_subscription_keyboard(url: str) -> InlineKeyboardMarkup:
     builder.button(text="🏠 Главное меню", callback_data="main_menu")
     builder.adjust(1)
     return builder.as_markup()
+
+
+# Subscription active (after payment)
+def get_subscription_active_keyboard() -> InlineKeyboardMarkup:
+    """Get keyboard for active subscription notification."""
+    builder = InlineKeyboardBuilder()
+    builder.button(text="📱 Моя подписка", callback_data="my_subscription")
+    builder.button(text="📖 Как подключить", callback_data="instructions_menu")
+    builder.button(text="🏠 Главное меню", callback_data="main_menu")
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+# Cancel payment
+def get_cancel_payment_keyboard(callback_target: str = "main_menu") -> InlineKeyboardMarkup:
+    """
+    Get cancel payment keyboard.
+
+    Args:
+        callback_target: Where to return on cancel
+
+    Returns:
+        InlineKeyboardMarkup
+    """
+    builder = InlineKeyboardBuilder()
+    builder.button(text="❌ Отменить оплату", callback_data=callback_target)
+    builder.adjust(1)
+    return builder.as_markup()
