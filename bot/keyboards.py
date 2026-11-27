@@ -20,13 +20,15 @@ def get_main_menu_keyboard(has_subscription: bool = False) -> InlineKeyboardMark
         builder.button(text="📱 Моя подписка", callback_data="my_subscription")
         builder.button(text="🔄 Продлить", callback_data="pricing")
         builder.button(text="➕ Докупить устройство", callback_data="extra_device")
+        builder.button(text="📖 Инструкции", callback_data="instructions_menu")
+        builder.button(text="🆘 Поддержка", callback_data="support")
+        builder.adjust(2, 1, 2)
     else:
-        builder.button(text="💰 Купить подписку", callback_data="pricing")
+        builder.button(text="💎 Купить подписку", callback_data="pricing")
+        builder.button(text="📖 Инструкции", callback_data="instructions_menu")
+        builder.button(text="🆘 Поддержка", callback_data="support")
+        builder.adjust(1, 2)
 
-    builder.button(text="📖 Как подключить", callback_data="instructions_menu")
-    builder.button(text="💬 Поддержка", callback_data="support")
-
-    builder.adjust(2 if has_subscription else 1)
     return builder.as_markup()
 
 

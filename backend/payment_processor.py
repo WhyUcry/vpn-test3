@@ -65,18 +65,23 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
     # This is a simplified mapping - adjust to your actual pricing
     amount_rub = payment.amount / 100  # Convert from kopeks to rubles
 
+    logger.info(f"💰 Activating subscription for user {user.telegram_id}, amount: {amount_rub} RUB")
+
     # Map amount to days (adjust these values to match your pricing)
     if amount_rub >= 1400:  # 12 months
         days = 365
         base_devices = 1
+        logger.info(f"📅 Detected plan: 12 months (365 days)")
     elif amount_rub >= 450:  # 3 months
         days = 90
         base_devices = 1
+        logger.info(f"📅 Detected plan: 3 months (90 days)")
     elif amount_rub >= 150:  # 1 month
         days = 30
         base_devices = 1
+        logger.info(f"📅 Detected plan: 1 month (30 days)")
     else:
-        logger.error(f"Invalid subscription amount: {amount_rub} RUB")
+        logger.error(f"❌ Invalid subscription amount: {amount_rub} RUB")
         return False
 
     # Check if user has an active subscription
@@ -89,11 +94,12 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
 
     if active_sub:
         # Extend existing subscription
-        logger.info(f"Extending subscription {active_sub.id} by {days} days")
+        logger.info(f"🔄 Extending existing subscription {active_sub.id} by {days} days")
+        old_expires = active_sub.expires_at
         active_sub.expires_at = active_sub.expires_at + timedelta(days=days)
         db.commit()
 
-        logger.info(f"Subscription extended until {active_sub.expires_at}")
+        logger.info(f"✅ Subscription extended: {old_expires} → {active_sub.expires_at}")
 
         # Notify user
         notify_user_payment_success(db, user, active_sub, payment)
@@ -102,7 +108,7 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
 
     else:
         # Create new subscription
-        logger.info(f"Creating new subscription for user {user.id}")
+        logger.info(f"🆕 Creating NEW subscription for user {user.id}")
 
         token = str(uuid.uuid4())
         expires_at = now + timedelta(days=days)
@@ -119,16 +125,17 @@ def _activate_subscription(db: Session, payment: Payment, user: User) -> bool:
         db.commit()
         db.refresh(subscription)
 
+        logger.info(f"✅ Subscription created: ID={subscription.id}, Token={token[:8]}...")
+
         # Create device slots
+        logger.info(f"🎰 Creating {base_devices} device slots...")
         create_device_slots(db, subscription.id, base_devices)
+        logger.info(f"✅ Device slots created successfully")
 
-        logger.info(
-            f"Subscription created: id={subscription.id}, "
-            f"token={token[:8]}..., expires={expires_at}"
-        )
-
+        logger.info(f"📢 Creating notification for user {user.telegram_id}...")
         # Notify user
         notify_user_payment_success(db, user, subscription, payment)
+        logger.info(f"✅ Notification created")
 
         return True
 

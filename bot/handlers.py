@@ -78,11 +78,47 @@ def calculate_discount(original: int, discounted: int) -> int:
 
 # Command handlers
 @router.message(Command("start"))
-async def cmd_start(message: Message):
+async def cmd_start(message: Message, command: CommandObject = None):
     """Handle /start command."""
     db = SessionLocal()
     try:
         user = get_or_create_user(db, message.from_user.id, message.from_user.username)
+
+        # Check for deep link (payment result)
+        if command and command.args:
+            if command.args.startswith("paid_"):
+                # Payment success - check subscription
+                subscription = get_active_subscription(db, user.id)
+                if subscription:
+                    sub_url = f"{DOMAIN}/sub/{subscription.token}"
+                    expires_str = subscription.expires_at.strftime("%d.%m.%Y")
+                    devices = subscription.base_devices + subscription.extra_devices
+
+                    await message.answer(
+                        texts.PAYMENT_SUCCESS.format(
+                            expires_at=expires_str,
+                            devices=devices,
+                            url=sub_url
+                        ),
+                        reply_markup=keyboards.get_subscription_active_keyboard()
+                    )
+                else:
+                    await message.answer(
+                        "⏳ Обрабатываем вашу оплату, подождите несколько секунд...",
+                        reply_markup=keyboards.get_main_menu_keyboard(has_subscription=False)
+                    )
+                return
+
+            elif command.args.startswith("fail_"):
+                # Payment failed
+                await message.answer(
+                    "❌ Оплата отменена или не прошла.\n\n"
+                    "Вы можете попробовать снова или выбрать другой способ оплаты.",
+                    reply_markup=keyboards.get_main_menu_keyboard(has_subscription=False)
+                )
+                return
+
+        # Regular start
         subscription = get_active_subscription(db, user.id)
 
         await message.answer(
@@ -323,7 +359,10 @@ async def callback_pay(callback: CallbackQuery):
                 url=result["url"]
             )
 
-            await callback.message.edit_text(text)
+            await callback.message.edit_text(
+                text,
+                reply_markup=keyboards.get_cancel_payment_keyboard("main_menu")
+            )
             await callback.answer()
 
         except Exception as e:
