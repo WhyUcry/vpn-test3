@@ -15,15 +15,6 @@ vpn.example.com {
         -Server
     }
 
-    # Rate limiting
-    rate_limit {
-        zone subscription {
-            key {remote_host}
-            events 100
-            window 1m
-        }
-    }
-
     # Logs
     log {
         output file /data/access.log
